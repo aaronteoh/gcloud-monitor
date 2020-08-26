@@ -23,11 +23,11 @@ Monitor Google Cloud Compute Engine instances. Restart terminated instances.
     ```
 
 5. Set up repo
-    ``````
+    ```
     $ sudo mkdir /opt/repositories
     $ cd /opt/repositories
     $ sudo git clone https://github.com/aaronteoh/gcloud-monitor.git
-    ```
+   ```
    
 6. Install dependancies
     ```
