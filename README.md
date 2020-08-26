@@ -31,33 +31,39 @@ Monitor Google Cloud Compute Engine instances. Restart terminated instances.
    
 6. Install dependancies
     ```
-    $ cd /opt/gcloud-monitor
+    $ cd gcloud-monitor
     $ sudo pip3 install -r requirements.txt
+    $ sudo mkdir credentials
     ```
    
 7. Create service account in GCP
     - ensure service account has access to view instance status and start instance 
     - download account key
+    - rename account key file to GOOGLE-CLOUD-CREDENTIALS.json
 
 8. Inside ssh, click on settings button, upload file, then upload key
 
 9. Move key to credentials directory
     ```
     $ cd /home/$USER
-    $ sudo mv <file name> /opt/repositories/streetcred/credentials/<file name>
+    $ sudo mv GOOGLE-CLOUD-CREDENTIALS.json /opt/repositories/streetcred/credentials/GOOGLE-CLOUD-CREDENTIALS.json
     ```
 
 10. Create config of instances to monitor
     ```
+    $ cd /opt/repositories/gcloud-monitor
+    $ sudo mkdir config
+    $ cd config
     $ echo '{"<instance name>": {"project": "<project name>", "zone": "<zone name>"}}' | sudo tee instances.json
     ```
 
-11. Set up crontab
-    ```
-    $ sudo crontab /opt/repositories/gcloud-monitor/crontab
-    ```
-12. Test script
+11. Test script
     ```
     $ cd /opt/repositories/gcloud-monitor
-    $ sudo python3 instance-monitor.py
+    $ sudo python3 instance-monitor.py --debug
+    ```
+    
+12. Set up crontab
+    ```
+    $ sudo crontab /opt/repositories/gcloud-monitor/crontab
     ```
