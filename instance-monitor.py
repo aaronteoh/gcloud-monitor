@@ -2,7 +2,7 @@
 # https://stackoverflow.com/questions/31343498/how-do-i-automatically-restart-a-gce-preemptible-instance
 # https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances?hl=en_US
 
-import os, pathlib
+import argparse, os, pathlib
 from logger import load_logger, logging
 
 
@@ -24,7 +24,12 @@ if __name__ == '__main__':
     proj_dir = pathlib.Path(__file__).parent.absolute()
     filename = os.path.basename(__file__).split('.')[0]
 
-    load_logger(proj_dir, filename)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", help="log in debug mode", action="store_true")
+    args = parser.parse_args()
+    debug_on = args.debug
+
+    load_logger(proj_dir, filename, debug_on)
     logging.debug('>>> Script start')
 
     try:
@@ -50,6 +55,8 @@ if __name__ == '__main__':
             status = get_instance(compute, project, zone, instance)['status']
             if status != 'RUNNING':
                 logging.warning('%s / %s / %s STATUS: %s'%(project, instance, zone, status))
+            else:
+                logging.debug('%s / %s / %s STATUS: %s' % (project, instance, zone, status))
             # https://cloud.google.com/compute/docs/instances/instance-life-cycle
             # https://cloud.google.com/compute/docs/instances/preemptible
             if status == 'TERMINATED':

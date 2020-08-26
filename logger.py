@@ -4,7 +4,7 @@ import pytz
 import logging
 from datetime import datetime
 
-def load_logger(proj_dir, filename):
+def load_logger(proj_dir, filename, debug):
     log_dir = os.path.join(proj_dir, 'logs')
 
     if not os.path.isdir(log_dir):
@@ -13,7 +13,10 @@ def load_logger(proj_dir, filename):
     log_path = os.path.join(log_dir, '%s-%s.log'%(datetime.now(tz).strftime('%Y%m%d'), filename))
 
     logger = logging.getLogger()
-    logger.setLevel(logging.WARNING)
+    if debug:
+        logger.setLevel(logging.DEBUG)
+    else:
+        logger.setLevel(logging.WARNING)
 
     output_file_handler = logging.FileHandler(log_path)
     stdout_handler = logging.StreamHandler(sys.stdout)
