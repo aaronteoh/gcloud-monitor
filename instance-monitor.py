@@ -60,8 +60,9 @@ if __name__ == '__main__':
             # https://cloud.google.com/compute/docs/instances/instance-life-cycle
             # https://cloud.google.com/compute/docs/instances/preemptible
             if status == 'TERMINATED':
+                logging.warning('Restarting instance')
                 response = start_instance(compute, project, zone, instance)
-                logging.info(response)
+                logging.warning(response)
 
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)
