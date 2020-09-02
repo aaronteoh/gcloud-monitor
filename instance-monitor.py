@@ -19,6 +19,11 @@ def start_instance(compute, project, zone, instance):
     response = request.execute()
     return response
 
+# https://cloud.google.com/compute/docs/reference/rest/v1/instances/stop
+def stop_instance(compute, project, zone, instance):
+    request = compute.instances().stop(project=project, zone=zone, instance=instance)
+    response = request.execute()
+    return response
 
 if __name__ == '__main__':
     proj_dir = pathlib.Path(__file__).parent.absolute()
@@ -26,8 +31,11 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", help="log in debug mode", action="store_true")
+    parser.add_argument("--terminate", help="terminate instance", action="store_true")
+
     args = parser.parse_args()
     debug_on = args.debug
+    terminate = args.terminate
 
     load_logger(proj_dir, filename, debug_on)
     logging.debug('>>> Script start')
@@ -62,6 +70,11 @@ if __name__ == '__main__':
             if status == 'TERMINATED':
                 logging.warning('Restarting instance')
                 response = start_instance(compute, project, zone, instance)
+                logging.warning(response)
+
+            if status == 'RUNNING' and terminate:
+                logging.warning('Terminating instance')
+                response = stop_instance(compute, project, zone, instance)
                 logging.warning(response)
 
     except Exception as e:

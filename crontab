@@ -9,3 +9,4 @@
 
 # check instances, restart if terminated
 * * * * * sudo python3 /opt/repositories/gcloud-monitor/instance-monitor.py
+50 3 * * * sudo python3 /opt/repositories/gcloud-monitor/instance-monitor.py --terminate
